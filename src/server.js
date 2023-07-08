@@ -1,28 +1,18 @@
 import express from "express";
+import morgan from "morgan";
 
 // express function
 const PORT = 4000;
 const app = express();
-
-// middleware
-const logger = (req, res, next) => {
-    console.log(`${req.method} ${req.url}`);
-    next();
-}
-const privateMiddleware = (req, res, next) => {
-    const url = req.url;
-    if (url === "/protected") {
-        return res.send("<h1>Not Allowed</h1>")
-    }
-    console.log("Allowed You may continue");
-    next();
-}
+const morganLogger = morgan("dev");
 
 // request, respond given by express
-const handleHome = (req, res, next) => {    
+const home = (req, res, next) => {
+    console.log("Home Home Home ...")
     return res.send("Home Page");
 }
-const handleLogin = (req, res, next) => {
+const login = (req, res) => {
+    console.log("Login Login Login ...")
     return res.send("Login Page");
 }
 const handleProtected = (req, res) => {
@@ -30,11 +20,10 @@ const handleProtected = (req, res) => {
 }
 
 // middleWare + URL
-app.use(logger);
-app.use(privateMiddleware);
-app.get("/", handleHome);
+app.use(morganLogger);
+app.get("/", home);
 app.get("/protected", handleProtected)
-app.get("/login", handleLogin);
+app.get("/login", login)
 
 // Server Composition
 const handleListening = () => console.log(`Server Listening on port http://localhost:${PORT}`)
