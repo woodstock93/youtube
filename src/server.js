@@ -10,6 +10,13 @@ const PORT = 4000;
 const app = express();
 const morganLogger = morgan("dev");
 
+// cwd directory is the directory which start node JS. And it is package.json path
+console.log(process.cwd());
+
+// set view engine and views path
+app.set("view engine", "pug");
+app.set("views", process.cwd() + "/src/views");
+
 // middleWare
 app.use(morganLogger);
 
